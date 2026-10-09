@@ -1,0 +1,133 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<section class="order-success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <p class="eyebrow">
+            LUMIERA JEWELS
+        </p>
+
+        <h1>
+            Order Confirmed
+        </h1>
+
+        <p class="success-message">
+            Thank you for choosing LUMIERA.
+            Your jewellery order has been successfully placed.
+        </p>
+
+
+        <div class="order-number">
+
+            <span>
+                ORDER NUMBER
+            </span>
+
+            <strong>
+                #{{ order.id }}
+            </strong>
+
+        </div>
+
+
+        <div class="order-details">
+
+            <div>
+                <span>
+                    Customer
+                </span>
+
+                <strong>
+                    {{ order.customer_name }}
+                </strong>
+            </div>
+
+            <div>
+                <span>
+                    Email
+                </span>
+
+                <strong>
+                    {{ order.email }}
+                </strong>
+            </div>
+
+            <div>
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ order.phone }}
+                </strong>
+            </div>
+
+            <div>
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹{{ order.total_amount }}
+                </strong>
+            </div>
+
+            <div>
+                <span>
+                    Status
+                </span>
+
+                <strong>
+                    {{ order.get_status_display }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="delivery-address">
+
+            <span>
+                DELIVERY ADDRESS
+            </span>
+
+            <p>
+                {{ order.address }}<br>
+                {{ order.city }}<br>
+                {{ order.state }} -
+                {{ order.pincode }}
+            </p>
+
+        </div>
+
+
+        <div class="success-actions">
+
+            <a
+                href="{% url 'shop' %}"
+                class="success-btn"
+            >
+                CONTINUE SHOPPING
+            </a>
+
+            <a
+                href="{% url 'home' %}"
+                class="success-link"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}  

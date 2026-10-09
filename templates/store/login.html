@@ -1,0 +1,86 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+
+            <span class="auth-label">
+                WELCOME BACK
+            </span>
+
+            <h1>Login</h1>
+
+            <p>
+                Continue your LUMIERA journey.
+            </p>
+
+        </div>
+
+        {% if error %}
+            <div class="auth-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="auth-form">
+
+            {% csrf_token %}
+
+            <div class="auth-group">
+                <label for="username">
+                    USERNAME
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter username"
+                    required
+                >
+            </div>
+
+            <div class="auth-group">
+                <label for="password">
+                    PASSWORD
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="auth-submit"
+            >
+                LOGIN
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            <span>
+                Don't have an account?
+            </span>
+
+            <a href="{% url 'register' %}">
+                CREATE ACCOUNT
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

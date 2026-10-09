@@ -1,0 +1,209 @@
+
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<section class="cart-page">
+
+    <!-- PAGE HEADER -->
+    <div class="cart-header">
+        <p class="eyebrow">YOUR SELECTION</p>
+        <h1>Shopping Cart</h1>
+        <p>Review your selected pieces before checkout.</p>
+    </div>
+
+    {% if cart_items %}
+
+    <div class="cart-layout">
+
+        <!-- LEFT: CART ITEMS -->
+        <div class="cart-items">
+
+            {% for item in cart_items %}
+
+            <div class="cart-item">
+
+                <!-- PRODUCT IMAGE -->
+                <div class="cart-item-image">
+
+                    {% if item.product.image %}
+                        <img
+                            src="{{ item.product.image.url }}"
+                            alt="{{ item.product.name }}"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="no-product-image">
+                            <span>LUMIERA</span>
+                            <small>JEWELS</small>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- PRODUCT DETAILS -->
+                <div class="cart-item-details">
+
+                    <p class="cart-category">
+                        {{ item.product.category.name }}
+                    </p>
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p class="cart-price">
+                        ₹{{ item.product.final_price|floatformat:2 }}
+                    </p>
+
+                    <!-- UPDATE QUANTITY FORM -->
+                    <form
+                        method="POST"
+                        action="{% url 'update_cart' item.product.id %}"
+                        class="cart-update-form"
+                    >
+                        {% csrf_token %}
+
+                        <div class="cart-quantity">
+
+                            <label>Quantity</label>
+
+                            <div class="quantity-control">
+
+                                <button
+                                    type="button"
+                                    class="quantity-minus"
+                                    aria-label="Decrease quantity"
+                                >−</button>
+
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    value="{{ item.quantity }}"
+                                    min="1"
+                                    max="{{ item.product.stock }}"
+                                    required
+                                    aria-label="Product quantity"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="quantity-plus"
+                                    aria-label="Increase quantity"
+                                >+</button>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="update-cart-btn"
+                        >
+                            UPDATE CART
+                        </button>
+
+                    </form>
+
+                    <!-- REMOVE PRODUCT -->
+                    <form
+                        method="POST"
+                        action="{% url 'remove_from_cart' item.product.id %}"
+                        class="remove-cart-form"
+                    >
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="remove-cart-btn"
+                        >
+                            Remove Item
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- ITEM TOTAL -->
+                <div class="cart-item-total">
+
+                    <span>Item Total</span>
+
+                    <strong>
+                        ₹{{ item.item_total|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- RIGHT: ORDER SUMMARY -->
+        <aside class="cart-summary">
+
+            <p class="summary-label">ORDER SUMMARY</p>
+
+            <h2>Your Order</h2>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>₹{{ subtotal|floatformat:2 }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+                <strong class="free-shipping">FREE</strong>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <strong>₹{{ subtotal|floatformat:2 }}</strong>
+            </div>
+
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+                PROCEED TO CHECKOUT
+                <span>→</span>
+            </a>
+
+            <a href="{% url 'shop' %}" class="continue-shopping">
+                ← Continue Shopping
+            </a>
+
+            <div class="cart-trust-note">
+                <span>✧</span>
+                <p>Beautifully selected. Carefully crafted.</p>
+            </div>
+
+        </aside>
+
+    </div>
+
+    {% else %}
+
+    <!-- EMPTY CART -->
+    <div class="empty-cart">
+
+        <div class="empty-cart-icon">♢</div>
+
+        <p class="eyebrow">A LITTLE SPACE FOR SOMETHING BEAUTIFUL</p>
+
+        <h2>Your cart is empty</h2>
+
+        <p>
+            Discover something beautiful from the LUMIERA collection.
+        </p>
+
+        <a href="{% url 'shop' %}" class="shop-now-btn">
+            EXPLORE COLLECTION
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

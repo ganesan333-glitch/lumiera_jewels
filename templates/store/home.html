@@ -1,0 +1,272 @@
+```django
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}
+LUMIERA JEWELS | Luxury Jewellery
+{% endblock %}
+
+{% block content %}
+
+<!-- GOLDEN HOUR PROMOTIONAL BANNER -->
+<section class="golden-promo">
+    <div class="golden-promo-brand">
+        <span class="golden-promo-star">✦</span>
+        <span>THE LUMIERA EDIT</span>
+    </div>
+
+    <div class="golden-promo-copy">
+        <p class="golden-promo-eyebrow">THE LUMIERA EDIT</p>
+        <h2>THE GOLDEN HOUR EDIT</h2>
+        <p>Timeless jewellery for unforgettable moments.</p>
+    </div>
+
+    <a href="{% url 'shop' %}" class="golden-promo-button">
+        SHOP THE EDIT <span aria-hidden="true">⟶</span>
+    </a>
+</section>
+
+
+<!-- =========================================
+     HERO SECTION
+========================================= -->
+
+<section class="hero">
+
+    <!-- Background orbits -->
+    <div class="hero-orbit hero-orbit-one"></div>
+    <div class="hero-orbit hero-orbit-two"></div>
+
+    <!-- Decorative particles -->
+    <div class="hero-particle particle-one" aria-hidden="true">✦</div>
+    <div class="hero-particle particle-two" aria-hidden="true">✧</div>
+    <div class="hero-particle particle-three" aria-hidden="true">◇</div>
+
+    <!-- Hero text -->
+    <div class="hero-content">
+
+        <span class="hero-label">
+            THE ART OF MODERN LUXURY
+        </span>
+
+        <h1>
+            Jewellery
+            <span>Beyond Ordinary.</span>
+        </h1>
+
+        <p>
+            Discover refined jewellery crafted
+            for unforgettable moments.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="{% url 'shop' %}" class="luxury-btn">
+                EXPLORE COLLECTION
+                <span aria-hidden="true">→</span>
+            </a>
+
+            <a href="{% url 'shop' %}" class="luxury-btn secondary">
+                DISCOVER MORE
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Decorative jewellery visual -->
+    <div class="hero-visual" aria-hidden="true">
+
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+
+        <div class="jewel-orb">
+            ✦
+        </div>
+
+        <div class="floating-card card-one">
+            18K GOLD
+        </div>
+
+        <div class="floating-card card-two">
+            HANDCRAFTED
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FEATURED PRODUCTS
+========================================= -->
+
+<section class="featured-section">
+
+    <div class="section-heading">
+
+        <div>
+            <p class="eyebrow">CURATED FOR YOU</p>
+            <h2>Featured Pieces</h2>
+        </div>
+
+        <a href="{% url 'shop' %}" class="view-all">
+            View All <span aria-hidden="true">→</span>
+        </a>
+
+    </div>
+
+    <div class="product-grid">
+
+        {% for product in featured_products %}
+
+        <article class="product-card">
+
+            <!-- Product image -->
+            <div class="product-image">
+
+                {% if product.image %}
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                        loading="lazy"
+                    >
+                {% else %}
+                    <div class="no-product-image">
+                        <span>LUMIERA JEWELS</span>
+                        <small>Image coming soon</small>
+                    </div>
+                {% endif %}
+
+                <!-- Sale badge -->
+                {% if product.discount_price %}
+                    <span class="sale-badge">SALE</span>
+                {% endif %}
+
+                <!-- Wishlist -->
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'add_to_wishlist' product.id %}"
+                        class="wishlist-btn"
+                        title="Add to Wishlist"
+                        aria-label="Add {{ product.name }} to wishlist"
+                    >
+                        ♡
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}?next={{ request.path|urlencode }}"
+                        class="wishlist-btn"
+                        title="Login to Wishlist"
+                        aria-label="Login to add {{ product.name }} to wishlist"
+                    >
+                        ♡
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+            <!-- Product details -->
+            <div class="product-info">
+
+                <p class="product-category">
+                    {{ product.category.name|default:"Fine Jewellery" }}
+                </p>
+
+                <h3>
+                    <a href="{% url 'product_detail' product.slug %}">
+                        {{ product.name }}
+                    </a>
+                </h3>
+
+                <!-- Product price -->
+                <div class="price">
+
+                    {% if product.discount_price %}
+
+                        <span class="old-price">
+                            ₹{{ product.price|floatformat:2 }}
+                        </span>
+
+                        <span class="discount-price">
+                            ₹{{ product.discount_price|floatformat:2 }}
+                        </span>
+
+                    {% else %}
+
+                        <span>
+                            ₹{{ product.price|floatformat:2 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="empty-products">
+
+            <h3>Coming Soon</h3>
+
+            <p>
+                Our curated collection is being prepared.
+                Please visit us again soon.
+            </p>
+
+            <a href="{% url 'shop' %}" class="luxury-btn">
+                EXPLORE COLLECTION
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     LUXURY STORY BANNER
+========================================= -->
+
+<section class="luxury-banner">
+
+    <div class="luxury-banner-content">
+
+        <p class="eyebrow">
+            MADE TO BE REMEMBERED
+        </p>
+
+        <h2>
+            Every piece tells
+            <span>a story.</span>
+        </h2>
+
+        <p>
+            From timeless silhouettes to contemporary
+            statements, discover jewellery created
+            with intention.
+        </p>
+
+        <a href="{% url 'shop' %}" class="luxury-btn">
+            EXPLORE LUMIERA
+            <span aria-hidden="true">→</span>
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
+```

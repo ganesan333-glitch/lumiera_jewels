@@ -1,0 +1,169 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<section class="orders-page">
+
+    <div class="orders-header">
+
+        <span class="section-label">
+            YOUR LUMIERA JOURNEY
+        </span>
+
+        <h1>My Orders</h1>
+
+        <p>
+            Welcome back, {{ user.username }}.
+            Here are your LUMIERA JEWELS orders.
+        </p>
+
+    </div>
+
+
+    {% if orders %}
+
+        <div class="orders-list">
+
+            {% for order in orders %}
+
+                <article class="order-card">
+
+                    <div class="order-card-header">
+
+                        <div>
+
+                            <span>
+                                ORDER #{{ order.id }}
+                            </span>
+
+                            <h2>
+                                {{ order.customer_name }}
+                            </h2>
+
+                        </div>
+
+                        <div class="order-status">
+                            {{ order.get_status_display }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-info">
+
+                        <div>
+
+                            <span>DATE</span>
+
+                            <strong>
+                                {{ order.created_at|date:"d M Y" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>ITEMS</span>
+
+                            <strong>
+                                {{ order.items.count }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>TOTAL</span>
+
+                            <strong>
+                                ₹{{ order.total_amount }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-items">
+
+                        {% for item in order.items.all %}
+
+                            <div class="order-item">
+
+                                <div>
+
+                                    <strong>
+                                        {{ item.product_name }}
+                                    </strong>
+
+                                    <span>
+                                        Qty: {{ item.quantity }}
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    ₹{{ item.item_total }}
+                                </strong>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="order-address">
+
+                        <span>
+                            DELIVERY ADDRESS
+                        </span>
+
+                        <p>
+
+                            {{ order.address }},
+                            {{ order.city }},
+                            {{ order.state }}
+                            -
+                            {{ order.pincode }}
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="no-orders">
+
+            <div class="no-orders-icon">
+                ♢
+            </div>
+
+            <h2>
+                No Orders Yet
+            </h2>
+
+            <p>
+                You haven't placed any orders yet.
+            </p>
+
+            <a href="{% url 'shop' %}">
+                EXPLORE COLLECTION
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

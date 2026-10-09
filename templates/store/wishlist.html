@@ -1,0 +1,123 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<section class="wishlist-page">
+
+    <div class="wishlist-header">
+        <span class="eyebrow">YOUR COLLECTION</span>
+
+        <h1>
+            My <span>Wishlist</span>
+        </h1>
+
+        <p>
+            Pieces you've chosen to remember.
+        </p>
+    </div>
+
+
+    {% if wishlist_items %}
+
+        <div class="wishlist-grid">
+
+            {% for item in wishlist_items %}
+
+                <article class="wishlist-card">
+
+                    <a
+                    href="{% url 'product_detail' item.product.slug %}"
+                    class="wishlist-image"
+                >
+                    {% if item.product.image %}
+                        <img
+                            src="{{ item.product.image.url }}"
+                            alt="{{ item.product.name }}"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="no-product-image">
+                            LUMIERA JEWELS
+                        </div>
+                    {% endif %}
+                </a>
+
+                    <div class="wishlist-info">
+
+                        <span class="wishlist-category">
+                            {{ item.product.category.name }}
+                        </span>
+
+                        <h2>
+                            {{ item.product.name }}
+                        </h2>
+
+                        <div class="wishlist-price">
+
+                            {% if item.product.sale_price %}
+                                ₹{{ item.product.sale_price }}
+                            {% else %}
+                                ₹{{ item.product.price }}
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="wishlist-actions">
+
+                            <a
+                                href="{% url 'product_detail' item.product.id %}"
+                                class="luxury-btn"
+                            >
+                                VIEW PIECE
+                            </a>
+
+                            <a
+                                href="{% url 'remove_from_wishlist' item.product.id %}"
+                                class="wishlist-remove"
+                                title="Remove from wishlist"
+                            >
+                                ♡
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-wishlist">
+
+            <div class="empty-heart">
+                ♡
+            </div>
+
+            <h2>
+                Your wishlist is waiting.
+            </h2>
+
+            <p>
+                Save the jewellery pieces you love
+                and return to them anytime.
+            </p>
+
+            <a
+                href="{% url 'shop' %}"
+                class="luxury-btn"
+            >
+                EXPLORE COLLECTION
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

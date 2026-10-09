@@ -1,0 +1,148 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        LUMIERA JEWELS
+        {% endblock %}
+    </title>
+
+    <meta
+        name="description"
+        content="LUMIERA JEWELS — Modern luxury jewellery."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            LUMIERA
+            <span>JEWELS</span>
+        </div>
+
+        
+        <!-- Promotional Jewellery Banner -->
+        <section class="promo-banner">
+            <div class="promo-jewellery-image"></div>
+
+            <div class="promo-copy">
+                <h2>THE GOLDEN HOUR EDIT</h2>
+                <p>Timeless jewellery for unforgettable moments.</p>
+            </div>
+
+            <a href="/shop/" class="promo-button">
+                SHOP THE EDIT <span>→</span>
+            </a>
+        </section>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="{% url 'shop' %}">Shop</a>
+            <a href="#">Collections</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="{% url 'order_history' %}">My Orders</a>
+  
+            {% if user.is_authenticated %}
+
+            <span class="nav-user">
+                Hi, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+
+        {% endif %}
+        </nav>
+
+        <div class="nav-actions">
+
+            <button class="icon-btn">
+                ♡
+            </button>
+
+            <a href="{% url 'cart' %}" class="cart-link">
+
+                🛍
+
+                {% if request.session.cart %}
+
+                    <span class="cart-count">
+                        {{ request.session.cart.values|length }}
+                    </span>
+
+                {% else %}
+
+                    <span class="cart-count">
+                        0
+                    </span>
+
+                {% endif %}
+
+            </a>
+
+            <button class="menu-btn">
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <footer class="footer">
+
+        <div>
+            <h3>LUMIERA</h3>
+            <p>
+                Jewellery designed for moments
+                that deserve to shine.
+            </p>
+        </div>
+
+        <div>
+            <p>© 2026 LUMIERA JEWELS</p>
+        </div>
+
+    </footer>
+
+
+    <script src="{% static 'js/app.js' %}" defer></script>
+
+</body>
+</html>
